@@ -31,7 +31,7 @@ export default function AppMovies() {
                   <h3 className="card-title pt-2">
                     <strong>{movie.title}</strong>
                   </h3>
-                  <p>{movie.description}</p>
+                  <p>{movie.description.substring(0, 100)}</p>
                   <Link className="btn btn-light" to={`/movies/${movie.id}`}>
                     Movie detail
                   </Link>
