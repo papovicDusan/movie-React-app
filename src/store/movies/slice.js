@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const middlewareActions = {
   getMovies() {},
   getMovie() {},
+  createMovie() {},
 };
 
 const moviesSlice = createSlice({
@@ -24,4 +25,5 @@ const moviesSlice = createSlice({
 
 export default moviesSlice.reducer;
 
-export const { getMovies, setMovies, getMovie, setMovie } = moviesSlice.actions;
+export const { getMovies, setMovies, getMovie, setMovie, createMovie } =
+  moviesSlice.actions;

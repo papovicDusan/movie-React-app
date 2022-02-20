@@ -16,11 +16,14 @@ export default function Movie() {
     return null;
   }
   return (
-    <div>
-      <h1>{movie.title}</h1>
-      <p>{movie.description}</p>
-      <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <img width="300" src={movie.image_url} alt="pic-any" />
+    <div className="container">
+      <div className="d-flex bd-highlight">
+        <div className="col-5">
+          <img width="100%" src={movie.image_url} alt="pic-any" />
+          <h1>{movie.title}</h1>
+          <h3>{movie.genre}</h3>
+          <p>{movie.description}</p>
+        </div>
       </div>
     </div>
   );

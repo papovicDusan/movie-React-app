@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AppMovies from "./pages/AppMovies";
 import Movie from "./pages/Movie";
+import CreateMovie from "./pages/CreateMovie";
 
 import { getActiveUser, selectIsAuthenticated } from "./store/auth";
 
@@ -35,6 +36,9 @@ function App() {
           </GuestRoute>
           <PrivateRoute exact path="/movies">
             <AppMovies />
+          </PrivateRoute>
+          <PrivateRoute exact path="/movies/create">
+            <CreateMovie />
           </PrivateRoute>
           <PrivateRoute exact path="/movies/:id">
             <Movie />
