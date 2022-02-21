@@ -6,6 +6,7 @@ function* handleGetMovies(action) {
   try {
     const movies = yield call(
       moviesService.getMovies,
+      action.payload.genre,
       action.payload.search,
       action.payload.page
     );

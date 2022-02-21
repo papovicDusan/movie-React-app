@@ -28,11 +28,14 @@ export default function MoviesSearch() {
 
   return (
     <div>
-      <input
-        type="text"
-        onChange={debouncedChange}
-        placeholder="Search movies"
-      />
+      <h3>Search</h3>
+      <div>
+        <input
+          type="text"
+          onChange={debouncedChange}
+          placeholder="Search movies"
+        />
+      </div>
     </div>
   );
 }

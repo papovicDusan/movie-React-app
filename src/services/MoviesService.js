@@ -1,9 +1,12 @@
 import HttpService from "./HttpService";
 
 class MoviesService extends HttpService {
-  getMovies = async (search = "", page = 1) => {
+  getMovies = async (genre = "", search = "", page = 1) => {
     let endpoint = "movies/";
     let query = [];
+    if (genre) {
+      query.push(`genre=${genre}`);
+    }
     if (search) {
       query.push(`search=${search}`);
     }
