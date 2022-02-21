@@ -9,12 +9,17 @@ const middlewareActions = {
 const moviesSlice = createSlice({
   name: "movies",
   initialState: {
-    allMovies: [],
+    page: {
+      count: 0,
+      next: "",
+      previous: "",
+      results: [],
+    },
     selectedMovie: null,
   },
   reducers: {
     setMovies(state, action) {
-      state.allMovies = action.payload;
+      state.page = action.payload;
     },
     setMovie(state, action) {
       state.selectedMovie = action.payload;

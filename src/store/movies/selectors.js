@@ -1,5 +1,5 @@
 export function selectMovies(state) {
-  return state.movies.allMovies;
+  return state.movies.page;
 }
 
 export function selectMovie(state) {
