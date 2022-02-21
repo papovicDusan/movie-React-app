@@ -3,13 +3,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMovies, selectMovies } from "../store/movies";
 import { Link } from "react-router-dom";
+import MoviesSearch from "../components/MoviesSearch";
 
 export default function AppMovies() {
   const movies = useSelector(selectMovies);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMovies({ page: 1 }));
+    dispatch(getMovies({ search: "", page: 1 }));
   }, []);
 
   const add = (pageNew) => {
@@ -19,6 +20,7 @@ export default function AppMovies() {
   return (
     <div>
       <h1>App movies</h1>
+      <MoviesSearch />
       <ul>
         {movies.results.map((movie) => (
           <li key={movie._id}>
