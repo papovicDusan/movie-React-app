@@ -17,7 +17,7 @@ export default function AppMovies() {
       <h1>App movies</h1>
       <ul>
         {movies.map((movie) => (
-          <li key={movie.id}>
+          <li key={movie._id}>
             <div
               className="card card-image"
               style={{
@@ -32,7 +32,7 @@ export default function AppMovies() {
                     <strong>{movie.title}</strong>
                   </h3>
                   <p>{movie.description.substring(0, 100)}</p>
-                  <Link className="btn btn-light" to={`/movies/${movie.id}`}>
+                  <Link className="btn btn-light" to={`/movies/${movie._id}`}>
                     Movie detail
                   </Link>
                 </div>
