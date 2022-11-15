@@ -4,7 +4,11 @@ import { getMovies, setMovies, getMovie, setMovie, createMovie } from "./slice";
 
 function* handleGetMovies(action) {
   try {
-    const movies = yield call(moviesService.getMovies, action.payload.page);
+    const movies = yield call(
+      moviesService.getMovies,
+      action.payload.search,
+      action.payload.page
+    );
     yield put(setMovies(movies));
   } catch (error) {
     console.error(error);
