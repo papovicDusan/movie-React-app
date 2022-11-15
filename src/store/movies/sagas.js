@@ -4,7 +4,7 @@ import { getMovies, setMovies, getMovie, setMovie, createMovie } from "./slice";
 
 function* handleGetMovies(action) {
   try {
-    const movies = yield call(moviesService.getMovies);
+    const movies = yield call(moviesService.getMovies, action.payload.page);
     yield put(setMovies(movies));
   } catch (error) {
     console.error(error);

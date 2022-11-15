@@ -9,14 +9,18 @@ export default function AppMovies() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMovies());
+    dispatch(getMovies({ page: 1 }));
   }, []);
+
+  const add = (pageNew) => {
+    dispatch(getMovies({ page: pageNew }));
+  };
 
   return (
     <div>
       <h1>App movies</h1>
       <ul>
-        {movies.map((movie) => (
+        {movies.results.map((movie) => (
           <li key={movie._id}>
             <div
               className="card card-image"
@@ -41,6 +45,16 @@ export default function AppMovies() {
           </li>
         ))}
       </ul>
+      {movies.previous !== null && (
+        <button className="btn-primary" onClick={() => add(movies.previous)}>
+          Previous
+        </button>
+      )}
+      {movies.next !== null && (
+        <button className="btn-primary" onClick={() => add(movies.next)}>
+          Next
+        </button>
+      )}
     </div>
   );
 }
