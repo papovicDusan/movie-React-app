@@ -20,7 +20,7 @@ export default function AppMovies() {
     <div>
       <h1>App movies</h1>
       <ul>
-        {movies.map((movie) => (
+        {movies.results.map((movie) => (
           <li key={movie._id}>
             <div
               className="card card-image"
@@ -46,18 +46,12 @@ export default function AppMovies() {
         ))}
       </ul>
       {movies.previous !== null && (
-        <button
-          className="btn-primary"
-          onClick={() => add(movies.previous.split("page=")[1])}
-        >
+        <button className="btn-primary" onClick={() => add(movies.previous)}>
           Previous
         </button>
       )}
       {movies.next !== null && (
-        <button
-          className="btn-primary"
-          onClick={() => add(movies.next.split("page=")[1])}
-        >
+        <button className="btn-primary" onClick={() => add(movies.next)}>
           Next
         </button>
       )}
