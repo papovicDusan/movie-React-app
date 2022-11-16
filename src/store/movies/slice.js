@@ -5,6 +5,7 @@ const middlewareActions = {
   getMovie() {},
   createMovie() {},
   createComment() {},
+  getComments() {},
 };
 
 const moviesSlice = createSlice({
@@ -19,6 +20,12 @@ const moviesSlice = createSlice({
     selectedMovie: null,
     filter: null,
     search: null,
+    comments: {
+      count: 0,
+      next: "",
+      previous: "",
+      results: [],
+    },
   },
   reducers: {
     setMovies(state, action) {
@@ -33,8 +40,15 @@ const moviesSlice = createSlice({
     setSearch(state, action) {
       state.search = action.payload;
     },
-    addComment(state, action) {
-      state.selectedMovie.comments.push(action.payload);
+    setComments(state, action) {
+      state.comments = action.payload;
+    },
+    addComments(state, action) {
+      action.payload.results = [
+        ...state.comments.results,
+        ...action.payload.results,
+      ];
+      state.comments = action.payload;
     },
     ...middlewareActions,
   },
@@ -51,5 +65,7 @@ export const {
   setFilter,
   setSearch,
   createComment,
-  addComment,
+  getComments,
+  setComments,
+  addComments,
 } = moviesSlice.actions;
