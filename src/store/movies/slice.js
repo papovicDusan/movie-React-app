@@ -16,6 +16,8 @@ const moviesSlice = createSlice({
       results: [],
     },
     selectedMovie: null,
+    filter: null,
+    search: null,
   },
   reducers: {
     setMovies(state, action) {
@@ -24,11 +26,24 @@ const moviesSlice = createSlice({
     setMovie(state, action) {
       state.selectedMovie = action.payload;
     },
+    setFilter(state, action) {
+      state.filter = action.payload;
+    },
+    setSearch(state, action) {
+      state.search = action.payload;
+    },
     ...middlewareActions,
   },
 });
 
 export default moviesSlice.reducer;
 
-export const { getMovies, setMovies, getMovie, setMovie, createMovie } =
-  moviesSlice.actions;
+export const {
+  getMovies,
+  setMovies,
+  getMovie,
+  setMovie,
+  createMovie,
+  setFilter,
+  setSearch,
+} = moviesSlice.actions;

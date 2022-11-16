@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { getMovies } from "../store/movies";
+import { useDispatch, useSelector } from "react-redux";
+import { getMovies, selectSearch } from "../store/movies";
 import _ from "lodash";
 
 export default function MoviesFilter() {
   const [searchTerm, setSearchTerm] = useState("");
+  const search = useSelector(selectSearch);
   const dispatch = useDispatch();
 
   const typeMovies = [
@@ -24,7 +25,7 @@ export default function MoviesFilter() {
   ];
 
   useEffect(() => {
-    dispatch(getMovies({ genre: searchTerm, page: 1 }));
+    dispatch(getMovies({ search: search, genre: searchTerm, page: 1 }));
   }, [searchTerm]);
 
   return (

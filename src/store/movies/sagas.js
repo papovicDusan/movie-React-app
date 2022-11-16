@@ -1,6 +1,14 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import moviesService from "../../services/MoviesService";
-import { getMovies, setMovies, getMovie, setMovie, createMovie } from "./slice";
+import {
+  getMovies,
+  setMovies,
+  getMovie,
+  setMovie,
+  createMovie,
+  setFilter,
+  setSearch,
+} from "./slice";
 
 function* handleGetMovies(action) {
   try {
@@ -11,6 +19,8 @@ function* handleGetMovies(action) {
       action.payload.page
     );
     yield put(setMovies(movies));
+    yield put(setFilter(action.payload.genre));
+    yield put(setSearch(action.payload.search));
   } catch (error) {
     console.error(error);
   }
