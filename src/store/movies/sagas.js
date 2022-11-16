@@ -8,6 +8,8 @@ import {
   createMovie,
   setFilter,
   setSearch,
+  createComment,
+  addComment,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -47,6 +49,19 @@ function* handleCreateMovie(action) {
   }
 }
 
+function* handleCreateComment(action) {
+  try {
+    const comment = yield call(
+      moviesService.createComment,
+      action.payload.movie_id,
+      action.payload.content
+    );
+    yield put(addComment(comment));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -57,4 +72,8 @@ export function* watchGetMovie() {
 
 export function* watchCreateMovie() {
   yield takeLatest(createMovie.type, handleCreateMovie);
+}
+
+export function* watchCreateComment() {
+  yield takeLatest(createComment.type, handleCreateComment);
 }
