@@ -4,6 +4,7 @@ const middlewareActions = {
   getMovies() {},
   getMovie() {},
   createMovie() {},
+  createComment() {},
 };
 
 const moviesSlice = createSlice({
@@ -32,6 +33,9 @@ const moviesSlice = createSlice({
     setSearch(state, action) {
       state.search = action.payload;
     },
+    addComment(state, action) {
+      state.selectedMovie.comments.push(action.payload);
+    },
     ...middlewareActions,
   },
 });
@@ -46,4 +50,6 @@ export const {
   createMovie,
   setFilter,
   setSearch,
+  createComment,
+  addComment,
 } = moviesSlice.actions;
