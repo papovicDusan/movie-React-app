@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getMovie, selectMovie, createComment } from "../store/movies";
+import {
+  getMovie,
+  selectMovie,
+  createComment,
+  getComments,
+  selectComments,
+} from "../store/movies";
 
 export default function Movie() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const movie = useSelector(selectMovie);
+  const comments = useSelector(selectComments);
 
   const [commentData, setCommentData] = useState({
     content: "",
@@ -14,6 +21,7 @@ export default function Movie() {
 
   useEffect(() => {
     dispatch(getMovie(id));
+    dispatch(getComments({ movie_id: id, page: 1 }));
   }, [id]);
 
   function addComment(event) {
@@ -22,10 +30,17 @@ export default function Movie() {
       createComment({
         movie_id: id,
         content: commentData.content,
+        onSuccess: () => {
+          dispatch(getComments({ movie_id: id, page: 1 }));
+        },
       })
     );
     setCommentData({ ...commentData, content: "" });
   }
+
+  const seeComments = (pageNew) => {
+    dispatch(getComments({ movie_id: id, page: pageNew }));
+  };
 
   if (!movie) {
     return null;
@@ -65,15 +80,25 @@ export default function Movie() {
 
           <h3>Comments</h3>
 
-          <ul>
-            {movie.comments.map((comment) => (
-              <li className="list-group-item" key={comment._id}>
-                <div className="d-flex flex-column">
-                  <div className="p-2">Comment content: {comment.content}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {comments?.results.length ? (
+            <ul>
+              {comments.results.map((comment) => (
+                <li key={comment._id}>
+                  <div> {comment.content}</div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <h3>No Comments</h3>
+          )}
+          {comments?.next !== null && (
+            <button
+              className="btn-primary"
+              onClick={() => seeComments(Number(comments.next))}
+            >
+              More
+            </button>
+          )}
         </div>
       </div>
     </div>

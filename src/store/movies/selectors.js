@@ -13,3 +13,7 @@ export function selectFilter(state) {
 export function selectSearch(state) {
   return state.movies.search;
 }
+
+export function selectComments(state) {
+  return state.movies.comments;
+}

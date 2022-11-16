@@ -9,7 +9,9 @@ import {
   setFilter,
   setSearch,
   createComment,
-  addComment,
+  getComments,
+  setComments,
+  addComments,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -39,7 +41,7 @@ function* handleGetMovie(action) {
 
 function* handleCreateMovie(action) {
   try {
-    const movie = yield call(moviesService.createMovie, action.payload.movie);
+    yield call(moviesService.createMovie, action.payload.movie);
 
     if (action.payload.onSuccess) {
       yield call(action.payload.onSuccess);
@@ -51,12 +53,31 @@ function* handleCreateMovie(action) {
 
 function* handleCreateComment(action) {
   try {
-    const comment = yield call(
+    yield call(
       moviesService.createComment,
       action.payload.movie_id,
       action.payload.content
     );
-    yield put(addComment(comment));
+    if (action.payload.onSuccess) {
+      yield call(action.payload.onSuccess);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* handleGetComments(action) {
+  try {
+    const comments = yield call(
+      moviesService.getComments,
+      action.payload.movie_id,
+      action.payload.page
+    );
+    if (action.payload?.page > 1) {
+      yield put(addComments(comments));
+    } else {
+      yield put(setComments(comments));
+    }
   } catch (error) {
     console.error(error);
   }
@@ -76,4 +97,8 @@ export function* watchCreateMovie() {
 
 export function* watchCreateComment() {
   yield takeLatest(createComment.type, handleCreateComment);
+}
+
+export function* watchGetComments() {
+  yield takeLatest(getComments.type, handleGetComments);
 }
