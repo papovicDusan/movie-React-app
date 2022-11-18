@@ -11,8 +11,7 @@ import authService from "../../services/AuthService";
 
 function* registerHandler(action) {
   try {
-    const data = yield call(authService.register, action.payload.userData);
-    // yield put(setToken(data));
+    yield call(authService.register, action.payload.userData);
     if (action.payload.onSuccess) {
       yield call(action.payload.onSuccess);
     }

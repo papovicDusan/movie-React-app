@@ -50,6 +50,14 @@ export default function AppMovies() {
                   <Link className="btn btn-light" to={`/movies/${movie._id}`}>
                     Movie detail
                   </Link>
+                  <p>
+                    Number of like
+                    {movie.numberOfLikes ? movie.numberOfLikes : 0}
+                  </p>
+                  <p>
+                    Number of dislike
+                    {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
+                  </p>
                 </div>
               </div>
             </div>
