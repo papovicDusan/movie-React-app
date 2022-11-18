@@ -7,6 +7,8 @@ import {
   createComment,
   getComments,
   selectComments,
+  createLike,
+  deleteLike,
 } from "../store/movies";
 
 export default function Movie() {
@@ -38,6 +40,24 @@ export default function Movie() {
     setCommentData({ ...commentData, content: "" });
   }
 
+  function addLike(number) {
+    dispatch(
+      createLike({
+        movie_id: id,
+        like: number,
+      })
+    );
+  }
+
+  function removeLike(number) {
+    dispatch(
+      deleteLike({
+        movie_id: id,
+        like: number,
+      })
+    );
+  }
+
   const seeComments = (pageNew) => {
     dispatch(getComments({ movie_id: id, page: pageNew }));
   };
@@ -53,6 +73,54 @@ export default function Movie() {
           <h1>{movie.title}</h1>
           <h3>{movie.genre}</h3>
           <p>{movie.description}</p>
+          <h3>
+            Number of like {movie.numberOfLikes ? movie.numberOfLikes : 0}
+          </h3>
+          <h3>
+            Number of dislike
+            {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
+          </h3>
+          {movie.likedOrDislikedUser === 1 ? (
+            <button
+              className="btn btn-warning"
+              disabled={movie.likedOrDislikedUser === 0}
+              onClick={() => removeLike(1)}
+            >
+              Remove Like
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              disabled={
+                movie.likedOrDislikedUser === 1 ||
+                movie.likedOrDislikedUser === -1
+              }
+              onClick={() => addLike(1)}
+            >
+              Like
+            </button>
+          )}
+
+          {movie.likedOrDislikedUser === -1 ? (
+            <button
+              className="btn btn-warning"
+              disabled={movie.likedOrDislikedUser === 0}
+              onClick={() => removeLike(-1)}
+            >
+              Remove Dislike
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              disabled={
+                movie.likedOrDislikedUser === -1 ||
+                movie.likedOrDislikedUser === 1
+              }
+              onClick={() => addLike(-1)}
+            >
+              Dislike
+            </button>
+          )}
 
           <h3>Create Comment</h3>
           <form>

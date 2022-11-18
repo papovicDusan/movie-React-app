@@ -6,6 +6,8 @@ const middlewareActions = {
   createMovie() {},
   createComment() {},
   getComments() {},
+  createLike() {},
+  deleteLike() {},
 };
 
 const moviesSlice = createSlice({
@@ -50,6 +52,32 @@ const moviesSlice = createSlice({
       ];
       state.comments = action.payload;
     },
+    setLikes(state, action) {
+      state.selectedMovie.numberOfLikes = state.selectedMovie.numberOfLikes + 1;
+      if (state.selectedMovie.likedOrDislikedUser === -1) {
+        state.selectedMovie.numberOfDislikes =
+          state.selectedMovie.numberOfDislikes - 1;
+      }
+      state.selectedMovie.likedOrDislikedUser = 1;
+    },
+    setDislikes(state, action) {
+      state.selectedMovie.numberOfDislikes =
+        state.selectedMovie.numberOfDislikes + 1;
+      if (state.selectedMovie.likedOrDislikedUser === 1) {
+        state.selectedMovie.numberOfLikes =
+          state.selectedMovie.numberOfLikes - 1;
+      }
+      state.selectedMovie.likedOrDislikedUser = -1;
+    },
+    removeLikes(state, action) {
+      state.selectedMovie.numberOfLikes = state.selectedMovie.numberOfLikes - 1;
+      state.selectedMovie.likedOrDislikedUser = 0;
+    },
+    removeDislikes(state, action) {
+      state.selectedMovie.numberOfDislikes =
+        state.selectedMovie.numberOfDislikes - 1;
+      state.selectedMovie.likedOrDislikedUser = 0;
+    },
     ...middlewareActions,
   },
 });
@@ -68,4 +96,10 @@ export const {
   getComments,
   setComments,
   addComments,
+  createLike,
+  setLikes,
+  setDislikes,
+  deleteLike,
+  removeLikes,
+  removeDislikes,
 } = moviesSlice.actions;

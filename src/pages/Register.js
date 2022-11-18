@@ -25,7 +25,7 @@ export default function Register() {
           register({
             userData: values,
             onSuccess: () => {
-              history.push("/login/");
+              history.push("/login");
             },
           })
         );

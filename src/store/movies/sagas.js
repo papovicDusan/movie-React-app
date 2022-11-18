@@ -12,6 +12,12 @@ import {
   getComments,
   setComments,
   addComments,
+  createLike,
+  setLikes,
+  setDislikes,
+  deleteLike,
+  removeLikes,
+  removeDislikes,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -83,6 +89,42 @@ function* handleGetComments(action) {
   }
 }
 
+function* handleCreateLike(action) {
+  try {
+    yield call(
+      moviesService.createLike,
+      action.payload.movie_id,
+      action.payload.like
+    );
+    if (action.payload.like === 1) {
+      yield put(setLikes());
+    }
+    if (action.payload.like === -1) {
+      yield put(setDislikes());
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* handleDeleteLike(action) {
+  try {
+    yield call(
+      moviesService.deleteLike,
+      action.payload.movie_id,
+      action.payload.like
+    );
+    if (action.payload.like === 1) {
+      yield put(removeLikes());
+    }
+    if (action.payload.like === -1) {
+      yield put(removeDislikes());
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -101,4 +143,12 @@ export function* watchCreateComment() {
 
 export function* watchGetComments() {
   yield takeLatest(getComments.type, handleGetComments);
+}
+
+export function* watchCreateLike() {
+  yield takeLatest(createLike.type, handleCreateLike);
+}
+
+export function* watchDeleteLike() {
+  yield takeLatest(deleteLike.type, handleDeleteLike);
 }
