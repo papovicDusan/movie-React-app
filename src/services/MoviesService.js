@@ -49,6 +49,16 @@ class MoviesService extends HttpService {
     const { data } = await this.client.delete(`likes/movies/${movie_id}`);
     return data;
   };
+
+  getPopularMovies = async () => {
+    const { data } = await this.client.get(`movies/movies-popular`);
+    return data;
+  };
+
+  getGenreMovies = async (id) => {
+    const { data } = await this.client.get(`movies/${id}/movies-genre`);
+    return data;
+  };
 }
 
 const moviesService = new MoviesService();

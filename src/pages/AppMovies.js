@@ -6,6 +6,8 @@ import {
   selectMovies,
   selectFilter,
   selectSearch,
+  getPopularMovies,
+  selectPopularMovies,
 } from "../store/movies";
 import { Link } from "react-router-dom";
 import MoviesSearch from "../components/MoviesSearch";
@@ -15,10 +17,13 @@ export default function AppMovies() {
   const movies = useSelector(selectMovies);
   const filter = useSelector(selectFilter);
   const search = useSelector(selectSearch);
+  const popularMovies = useSelector(selectPopularMovies);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getMovies({ genre: "", search: "", page: 1 }));
+    dispatch(getPopularMovies());
   }, []);
 
   const add = (pageNew) => {
@@ -26,54 +31,78 @@ export default function AppMovies() {
   };
 
   return (
-    <div>
-      <h1>App movies</h1>
-      <MoviesSearch />
-      <MoviesFilter />
-      <ul>
-        {movies.results.map((movie) => (
-          <li key={movie._id}>
-            <div
-              className="card card-image"
-              style={{
-                backgroundImage: `url(${movie.image_url})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-              }}
-            >
-              <div className="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
-                <div>
-                  <h3 className="card-title pt-2">
-                    <strong>{movie.title}</strong>
-                  </h3>
-                  <p>{movie.description.substring(0, 100)}</p>
-                  <Link className="btn btn-light" to={`/movies/${movie._id}`}>
-                    Movie detail
-                  </Link>
-                  <p>
-                    Number of like
-                    {movie.numberOfLikes ? movie.numberOfLikes : 0}
-                  </p>
-                  <p>
-                    Number of dislike
-                    {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
-                  </p>
+    <div className="container">
+      <div className="d-flex">
+        <div className="col-9">
+          <h1>App movies</h1>
+          <MoviesSearch />
+          <MoviesFilter />
+          <ul>
+            {movies.results.map((movie) => (
+              <li key={movie._id}>
+                <div
+                  className="card card-image"
+                  style={{
+                    backgroundImage: `url(${movie.image_url})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                  }}
+                >
+                  <div className="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+                    <div>
+                      <h3 className="card-title pt-2">
+                        <strong>{movie.title}</strong>
+                      </h3>
+                      <p>{movie.description.substring(0, 100)}</p>
+                      <Link
+                        className="btn btn-light"
+                        to={`/movies/${movie._id}`}
+                      >
+                        Movie detail
+                      </Link>
+                      <p>
+                        Number of like
+                        {movie.numberOfLikes ? movie.numberOfLikes : 0}
+                      </p>
+                      <p>
+                        Number of dislike
+                        {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-      {movies.previous !== null && (
-        <button className="btn-primary" onClick={() => add(movies.previous)}>
-          Previous
-        </button>
-      )}
-      {movies.next !== null && (
-        <button className="btn-primary" onClick={() => add(movies.next)}>
-          Next
-        </button>
-      )}
+              </li>
+            ))}
+          </ul>
+          {movies.previous !== null && (
+            <button
+              className="btn-primary"
+              onClick={() => add(movies.previous)}
+            >
+              Previous
+            </button>
+          )}
+          {movies.next !== null && (
+            <button className="btn-primary" onClick={() => add(movies.next)}>
+              Next
+            </button>
+          )}
+        </div>
+        <nav id="sidebar">
+          <div className="p-4 pt-5">
+            <h3>Popular movies</h3>
+            <ul className="list-unstyled components mb-5">
+              {popularMovies?.map((movie) => (
+                <li key={movie._id}>
+                  <Link to={`/movies/${movie._id}`}>
+                    {movie.movie[0].title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      </div>
     </div>
   );
 }

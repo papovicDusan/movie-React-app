@@ -18,6 +18,10 @@ import {
   deleteLike,
   removeLikes,
   removeDislikes,
+  getPopularMovies,
+  getGenreMovies,
+  setPopularMovies,
+  setGenreMovies,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -125,6 +129,24 @@ function* handleDeleteLike(action) {
   }
 }
 
+function* handleGetPopularMovies(action) {
+  try {
+    const movies = yield call(moviesService.getPopularMovies);
+    yield put(setPopularMovies(movies));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* handleGetGenreMovies(action) {
+  try {
+    const movies = yield call(moviesService.getGenreMovies, action.payload);
+    yield put(setGenreMovies(movies));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -151,4 +173,12 @@ export function* watchCreateLike() {
 
 export function* watchDeleteLike() {
   yield takeLatest(deleteLike.type, handleDeleteLike);
+}
+
+export function* watchGetPopularMovies() {
+  yield takeLatest(getPopularMovies.type, handleGetPopularMovies);
+}
+
+export function* watchGetGenreMovies() {
+  yield takeLatest(getGenreMovies.type, handleGetGenreMovies);
 }

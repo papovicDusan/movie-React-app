@@ -9,13 +9,17 @@ import {
   selectComments,
   createLike,
   deleteLike,
+  getGenreMovies,
+  selectGenreMovies,
 } from "../store/movies";
+import { Link } from "react-router-dom";
 
 export default function Movie() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const movie = useSelector(selectMovie);
   const comments = useSelector(selectComments);
+  const genreMovies = useSelector(selectGenreMovies);
 
   const [commentData, setCommentData] = useState({
     content: "",
@@ -24,6 +28,7 @@ export default function Movie() {
   useEffect(() => {
     dispatch(getMovie(id));
     dispatch(getComments({ movie_id: id, page: 1 }));
+    dispatch(getGenreMovies(id));
   }, [id]);
 
   function addComment(event) {
@@ -66,9 +71,9 @@ export default function Movie() {
     return null;
   }
   return (
-    <div className="container">
+    <div className="container p-1">
       <div className="d-flex bd-highlight">
-        <div className="col-7">
+        <div className="col-9">
           <img width="100%" src={movie.image_url} alt="pic-any" />
           <h1>{movie.title}</h1>
           <h3>{movie.genre}</h3>
@@ -168,6 +173,19 @@ export default function Movie() {
             </button>
           )}
         </div>
+
+        <nav id="sidebar">
+          <div className="p-4 pt-5">
+            <h3>Related movies</h3>
+            <ul className="list-unstyled components mb-5">
+              {genreMovies.map((movie) => (
+                <li key={movie._id}>
+                  <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
       </div>
     </div>
   );
