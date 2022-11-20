@@ -8,6 +8,8 @@ const middlewareActions = {
   getComments() {},
   createLike() {},
   deleteLike() {},
+  getPopularMovies() {},
+  getGenreMovies() {},
 };
 
 const moviesSlice = createSlice({
@@ -28,6 +30,8 @@ const moviesSlice = createSlice({
       previous: "",
       results: [],
     },
+    popularMovies: [],
+    genreMovies: [],
   },
   reducers: {
     setMovies(state, action) {
@@ -78,6 +82,12 @@ const moviesSlice = createSlice({
         state.selectedMovie.numberOfDislikes - 1;
       state.selectedMovie.likedOrDislikedUser = 0;
     },
+    setPopularMovies(state, action) {
+      state.popularMovies = action.payload;
+    },
+    setGenreMovies(state, action) {
+      state.genreMovies = action.payload;
+    },
     ...middlewareActions,
   },
 });
@@ -102,4 +112,8 @@ export const {
   deleteLike,
   removeLikes,
   removeDislikes,
+  setPopularMovies,
+  setGenreMovies,
+  getPopularMovies,
+  getGenreMovies,
 } = moviesSlice.actions;

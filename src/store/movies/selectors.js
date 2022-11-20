@@ -17,3 +17,11 @@ export function selectSearch(state) {
 export function selectComments(state) {
   return state.movies.comments;
 }
+
+export function selectPopularMovies(state) {
+  return state.movies.popularMovies;
+}
+
+export function selectGenreMovies(state) {
+  return state.movies.genreMovies;
+}
