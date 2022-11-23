@@ -11,6 +11,7 @@ import {
   deleteLike,
   getGenreMovies,
   selectGenreMovies,
+  addVisit,
 } from "../store/movies";
 import { Link } from "react-router-dom";
 
@@ -29,6 +30,7 @@ export default function Movie() {
     dispatch(getMovie(id));
     dispatch(getComments({ movie_id: id, page: 1 }));
     dispatch(getGenreMovies(id));
+    dispatch(addVisit(id));
   }, [id]);
 
   function addComment(event) {
@@ -85,6 +87,7 @@ export default function Movie() {
             Number of dislike
             {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
           </h3>
+          <h3>Number of visit {movie.visits}</h3>
           {movie.likedOrDislikedUser === 1 ? (
             <button
               className="btn btn-warning"

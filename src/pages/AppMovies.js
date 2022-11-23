@@ -68,6 +68,7 @@ export default function AppMovies() {
                         Number of dislike
                         {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
                       </p>
+                      <p>Number of visit {movie.visits}</p>
                     </div>
                   </div>
                 </div>

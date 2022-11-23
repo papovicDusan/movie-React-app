@@ -10,6 +10,7 @@ const middlewareActions = {
   deleteLike() {},
   getPopularMovies() {},
   getGenreMovies() {},
+  addVisit() {},
 };
 
 const moviesSlice = createSlice({
@@ -116,4 +117,5 @@ export const {
   setGenreMovies,
   getPopularMovies,
   getGenreMovies,
+  addVisit,
 } = moviesSlice.actions;
