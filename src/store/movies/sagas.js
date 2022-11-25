@@ -22,6 +22,7 @@ import {
   getGenreMovies,
   setPopularMovies,
   setGenreMovies,
+  addVisit,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -147,6 +148,14 @@ function* handleGetGenreMovies(action) {
   }
 }
 
+function* handleAddVisit(action) {
+  try {
+    yield call(moviesService.addVisit, action.payload);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -181,4 +190,8 @@ export function* watchGetPopularMovies() {
 
 export function* watchGetGenreMovies() {
   yield takeLatest(getGenreMovies.type, handleGetGenreMovies);
+}
+
+export function* watchAddVisit() {
+  yield takeLatest(addVisit.type, handleAddVisit);
 }

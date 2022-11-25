@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import AppMovies from "./pages/AppMovies";
 import Movie from "./pages/Movie";
 import CreateMovie from "./pages/CreateMovie";
+import Watchlist from "./pages/Watchlist";
 
 import { getActiveUser, selectIsAuthenticated } from "./store/auth";
 
@@ -17,11 +18,11 @@ function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     dispatch(getActiveUser());
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getActiveUser());
+    }
+  }, []);
 
   return (
     <div>
@@ -42,6 +43,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute exact path="/movies/:id">
             <Movie />
+          </PrivateRoute>
+          <PrivateRoute exact path="/watchlist">
+            <Watchlist />
           </PrivateRoute>
         </Switch>
       </Router>
