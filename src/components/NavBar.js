@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectActiveUser, selectIsAuthenticated } from "../store/auth";
+import { logout, selectIsAuthenticated } from "../store/auth";
 
 export default function NavBar() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const activeUser = useSelector(selectActiveUser);
 
   const dispatch = useDispatch();
 
@@ -13,26 +12,41 @@ export default function NavBar() {
   }
 
   return (
-    <nav>
+    <nav className="navbar navbar-dark bg-light">
       {isAuthenticated ? (
-        <>
-          <li>
-            <Link to="/movies">Movies</Link>
+        <ul className="nav">
+          <li className="nav-item">
+            <Link className="nav-link" to="/movies">
+              Movies
+            </Link>
           </li>
-          <li>
-            <Link to="/movies/create">Add Movie</Link>
+          <li className="nav-item">
+            <Link className="nav-link" to="/movies/create">
+              Add Movie
+            </Link>
           </li>
-          <button onClick={handleLogout}>Logout</button>
-        </>
+          <li className="nav-item">
+            <Link className="nav-link" to="/watchlist">
+              Watchlist
+            </Link>
+          </li>
+          <button className="btn btn-primary" onClick={handleLogout}>
+            Logout
+          </button>
+        </ul>
       ) : (
-        <>
-          <li>
-            <Link to="/login">Login</Link>
+        <ul className="nav">
+          <li className="nav-item">
+            <Link className="nav-link" to="/login">
+              Login
+            </Link>
           </li>
-          <li>
-            <Link to="/register">Register</Link>
+          <li className="nav-item">
+            <Link className="nav-link" to="/register">
+              Register
+            </Link>
           </li>
-        </>
+        </ul>
       )}
     </nav>
   );

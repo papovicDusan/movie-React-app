@@ -9,6 +9,7 @@ import {
   getPopularMovies,
   selectPopularMovies,
 } from "../store/movies";
+import { selectActiveUser } from "../store/auth";
 import { Link } from "react-router-dom";
 import MoviesSearch from "../components/MoviesSearch";
 import MoviesFilter from "../components/MoviesFilter";
@@ -20,6 +21,19 @@ export default function AppMovies() {
   const popularMovies = useSelector(selectPopularMovies);
 
   const dispatch = useDispatch();
+
+  const activeUser = useSelector(selectActiveUser);
+
+  const isWatched = [];
+  if (movies && activeUser) {
+    movies?.results.map((movie) => {
+      const watchlistElement = activeUser.watchlistsArray.find(
+        (watchlist) => watchlist.movie === movie._id
+      );
+      const isWatchedMovie = !!watchlistElement?.is_watched;
+      isWatched[movie._id] = isWatchedMovie;
+    });
+  }
 
   useEffect(() => {
     dispatch(getMovies({ genre: "", search: "", page: 1 }));
@@ -69,6 +83,7 @@ export default function AppMovies() {
                         {movie.numberOfDislikes ? movie.numberOfDislikes : 0}
                       </p>
                       <p>Number of visit {movie.visits}</p>
+                      {isWatched[movie._id] && <p>You've watched this!</p>}
                     </div>
                   </div>
                 </div>

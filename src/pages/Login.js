@@ -3,6 +3,7 @@ import { login } from "../store/auth";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router";
+import { getActiveUser } from "../store/auth";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function Login() {
           login({
             userData: values,
             onSuccess: () => {
+              dispatch(getActiveUser());
               history.push("/movies");
             },
           })

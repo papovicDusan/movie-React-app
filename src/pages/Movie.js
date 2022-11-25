@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
@@ -13,7 +13,10 @@ import {
   selectGenreMovies,
   addVisit,
 } from "../store/movies";
+import { selectActiveUser, addMovieWatchlist } from "../store/auth";
 import { Link } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -21,49 +24,53 @@ export default function Movie() {
   const movie = useSelector(selectMovie);
   const comments = useSelector(selectComments);
   const genreMovies = useSelector(selectGenreMovies);
+  const activeUser = useSelector(selectActiveUser);
 
-  const [commentData, setCommentData] = useState({
-    content: "",
-  });
+  let isInWatchlist;
+  let isWatched;
 
-  useEffect(() => {
-    dispatch(getMovie(id));
-    dispatch(getComments({ movie_id: id, page: 1 }));
-    dispatch(getGenreMovies(id));
-    dispatch(addVisit(id));
-  }, [id]);
-
-  function addComment(event) {
-    event.preventDefault();
-    dispatch(
-      createComment({
-        movie_id: id,
-        content: commentData.content,
-        onSuccess: () => {
-          dispatch(getComments({ movie_id: id, page: 1 }));
-        },
-      })
+  if (movie && activeUser) {
+    const watchlistElement = activeUser.watchlistsArray.find(
+      (watchlist) => watchlist.movie === movie._id
     );
-    setCommentData({ ...commentData, content: "" });
+    isInWatchlist = !!watchlistElement;
+    isWatched = !!watchlistElement?.is_watched;
   }
 
-  function addLike(number) {
+  useEffect(() => {
+    if (id) {
+      dispatch(getMovie(id));
+      dispatch(getComments({ movie_id: id, page: 1 }));
+      dispatch(getGenreMovies(id));
+      dispatch(addVisit(id));
+    }
+  }, [id]);
+
+  const addLike = (number) => {
     dispatch(
       createLike({
         movie_id: id,
         like: number,
       })
     );
-  }
+  };
 
-  function removeLike(number) {
+  const removeLike = (number) => {
     dispatch(
       deleteLike({
         movie_id: id,
         like: number,
       })
     );
-  }
+  };
+
+  const addMovie = () => {
+    dispatch(
+      addMovieWatchlist({
+        movie_id: { movie: movie._id },
+      })
+    );
+  };
 
   const seeComments = (pageNew) => {
     dispatch(getComments({ movie_id: id, page: pageNew }));
@@ -130,35 +137,49 @@ export default function Movie() {
             </button>
           )}
 
-          <h3>Create Comment</h3>
-          <form>
-            <div className="form-group">
-              <label htmlFor="createComment">Create comment</label>
-              <input
-                required
-                className="form-control"
-                id="createComment"
-                placeholder="Content"
-                value={commentData.content}
-                onChange={({ target }) =>
-                  setCommentData({ ...commentData, content: target.value })
-                }
-              />
-            </div>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={addComment}
-            >
-              Add Comment
+          {isWatched && <h3 className="text-danger">You've watched this!</h3>}
+
+          {!isInWatchlist && (
+            <button className="btn btn-success" onClick={addMovie}>
+              Add Movie on Watchlist
             </button>
-          </form>
+          )}
+
+          <h3>Create Comment</h3>
+          <Formik
+            initialValues={{
+              content: "",
+            }}
+            validationSchema={Yup.object({
+              content: Yup.string().required("Required"),
+            })}
+            onSubmit={(values, { resetForm }) => {
+              dispatch(
+                createComment({
+                  movie_id: id,
+                  content: values.content,
+                  onSuccess: () => {
+                    dispatch(getComments({ movie_id: id, page: 1 }));
+                    resetForm({ values: "" });
+                  },
+                })
+              );
+            }}
+          >
+            <Form>
+              <label htmlFor="content">Create Comment</label>
+              <Field name="content" type="text" />
+              <ErrorMessage name="content" />
+
+              <button type="submit">Submit</button>
+            </Form>
+          </Formik>
 
           <h3>Comments</h3>
 
           {comments?.results.length ? (
             <ul>
-              {comments.results.map((comment) => (
+              {comments?.results?.map((comment) => (
                 <li key={comment._id}>
                   <div> {comment.content}</div>
                 </li>
@@ -181,7 +202,7 @@ export default function Movie() {
           <div className="p-4 pt-5">
             <h3>Related movies</h3>
             <ul className="list-unstyled components mb-5">
-              {genreMovies.map((movie) => (
+              {genreMovies?.map((movie) => (
                 <li key={movie._id}>
                   <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
                 </li>
