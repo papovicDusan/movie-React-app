@@ -30,23 +30,29 @@ class MoviesService extends HttpService {
   };
 
   createComment = async (movie_id, content) => {
-    const { data } = await this.client.post(`comments`, { content, movie_id });
+    const { data } = await this.client.post(`movies/${movie_id}/comments`, {
+      content,
+      movie_id,
+    });
     return data;
   };
 
   getComments = async (movie_id = "", page = 1) => {
-    let endpoint = `comments/movies/${movie_id}?page=${page}`;
+    let endpoint = `movies/${movie_id}/comments?page=${page}`;
     const { data } = await this.client.get(endpoint);
     return data;
   };
 
   createLike = async (movie_id, like) => {
-    const { data } = await this.client.post(`likes/`, { movie_id, like });
+    const { data } = await this.client.post(`movies/${movie_id}/likes/`, {
+      movie_id,
+      like,
+    });
     return data;
   };
 
   deleteLike = async (movie_id) => {
-    const { data } = await this.client.delete(`likes/movies/${movie_id}`);
+    const { data } = await this.client.delete(`movies/${movie_id}/likes`);
     return data;
   };
 
@@ -56,7 +62,7 @@ class MoviesService extends HttpService {
   };
 
   getGenreMovies = async (id) => {
-    const { data } = await this.client.get(`movies/${id}/movies-genre`);
+    const { data } = await this.client.get(`movies/${id}/related-movies`);
     return data;
   };
 
