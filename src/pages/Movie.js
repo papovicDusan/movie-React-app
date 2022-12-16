@@ -177,9 +177,9 @@ export default function Movie() {
 
           <h3>Comments</h3>
 
-          {comments?.results.length ? (
+          {comments?.docs.length ? (
             <ul>
-              {comments?.results?.map((comment) => (
+              {comments?.docs?.map((comment) => (
                 <li key={comment._id}>
                   <div> {comment.content}</div>
                 </li>
@@ -188,10 +188,10 @@ export default function Movie() {
           ) : (
             <h3>No Comments</h3>
           )}
-          {comments?.next !== null && (
+          {comments?.nextPage !== null && (
             <button
               className="btn-primary"
-              onClick={() => seeComments(Number(comments.next))}
+              onClick={() => seeComments(Number(comments.nextPage))}
             >
               More
             </button>

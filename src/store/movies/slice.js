@@ -17,19 +17,19 @@ const moviesSlice = createSlice({
   name: "movies",
   initialState: {
     page: {
-      count: 0,
-      next: "",
-      previous: "",
-      results: [],
+      totalDocs: 0,
+      nextPage: "",
+      prevPage: "",
+      docs: [],
     },
     selectedMovie: null,
     filter: null,
     search: null,
     comments: {
-      count: 0,
-      next: "",
-      previous: "",
-      results: [],
+      totalDocs: 0,
+      nextPage: "",
+      prevPage: "",
+      docs: [],
     },
     popularMovies: [],
     genreMovies: [],
@@ -51,10 +51,7 @@ const moviesSlice = createSlice({
       state.comments = action.payload;
     },
     addComments(state, action) {
-      action.payload.results = [
-        ...state.comments.results,
-        ...action.payload.results,
-      ];
+      action.payload.docs = [...state.comments.docs, ...action.payload.docs];
       state.comments = action.payload;
     },
     setLikes(state, action) {

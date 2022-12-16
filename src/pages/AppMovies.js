@@ -26,7 +26,7 @@ export default function AppMovies() {
 
   const isWatched = [];
   if (movies && activeUser) {
-    movies?.results.map((movie) => {
+    movies?.docs.map((movie) => {
       const watchlistElement = activeUser.watchlistsArray.find(
         (watchlist) => watchlist.movie === movie._id
       );
@@ -52,7 +52,7 @@ export default function AppMovies() {
           <MoviesSearch />
           <MoviesFilter />
           <ul>
-            {movies.results.map((movie) => (
+            {movies.docs.map((movie) => (
               <li key={movie._id}>
                 <div
                   className="card card-image"
@@ -90,16 +90,19 @@ export default function AppMovies() {
               </li>
             ))}
           </ul>
-          {movies.previous !== null && (
+          {movies.prevPage !== null && (
             <button
               className="btn-primary"
-              onClick={() => add(movies.previous)}
+              onClick={() => add(movies.prevPage)}
             >
               Previous
             </button>
           )}
-          {movies.next !== null && (
-            <button className="btn-primary" onClick={() => add(movies.next)}>
+          {movies.nextPage !== null && (
+            <button
+              className="btn-primary"
+              onClick={() => add(movies.nextPage)}
+            >
               Next
             </button>
           )}
